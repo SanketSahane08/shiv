@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h2>Registration Form</h2>
+            <form id="contactForm">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" id="uname" class="form-control" placeholder="Enter username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="fname" class="form-control" placeholder="Enter full name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="pass" class="form-control" placeholder="Enter password" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Address</label>
+                    <textarea class="form-control" id="address" placeholder="Enter address" required></textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Mobile No</label>
+                    <input type="tel" id="mob" class="form-control" placeholder="Enter mobile number" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">College</label>
+                    <input type="text" id="clg" class="form-control" placeholder="Enter college name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Birthdate</label>
+                    <input type="date" id="bdate" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+                <button onclick="window.location.href='service.html'" class="btn btn-secondary w-100 mt-2">Back to Home</button>
+            </form>
+        </div>
+    </div>
+
+<script type="module">
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+ import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+
+ // Firebase Configuration
+ const firebaseConfig = {
+     apiKey: "AIzaSyDOjc66AAbO10niCKR_jb_fYqywTUXqdq4",
+     authDomain: "sanket-ede34.firebaseapp.com",
+     projectId: "sanket-ede34",
+     storageBucket: "sanket-ede34.firebasestorage.app",
+     messagingSenderId: "894369713295",
+     appId: "1:894369713295:web:54cb8499f5b16eede034fa"
+ };
+
+ // Initialize Firebase
+ const app = initializeApp(firebaseConfig);
+ const database = getDatabase(app);
+
+ // Form Submission Handling
+ document.getElementById('contactForm').addEventListener('submit', function(event) {
+     event.preventDefault(); // Prevent page refresh
+
+     const uname = document.getElementById('uname').value;
+     const fname = document.getElementById('fname').value;
+     const email = document.getElementById('email').value;
+     const pass = document.getElementById('pass').value;
+     const address = document.getElementById('address').value;
+     const mob = document.getElementById('mob').value;
+     const clg = document.getElementById('clg').value;
+     const bdate = document.getElementById('bdate').value;
+
+     // Get a new unique reference in the "users" node
+     const newUserRef = push(ref(database,'Students/'+fname));
+
+     set(newUserRef, {
+         uname: uname,
+         fname: fname,
+         email: email,
+         pass: pass,
+         address: address,
+         mob: mob,
+         clg: clg,
+         bdate: bdate
+     })
+     .then(() => {
+         alert("Data saved successfully!");
+         document.getElementById('contactForm').reset(); // Clear form fields
+     })
+     .catch((error) => {
+         console.error("Error saving data: ", error);
+     });
+ });
+</script>
+
+</body>
+</html>
